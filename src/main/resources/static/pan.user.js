@@ -84,7 +84,7 @@ jQ(function ($) {
       sourceType: share.sourceType
     };
     $.ajax({
-      url: "https://192.168.10.242/share/getPassword",
+      url: "https://www.xanderye.cn/pan/share/getPassword",
       type: "GET",
       data: params,
       success: function (data) {
@@ -105,7 +105,7 @@ jQ(function ($) {
 
   function savePwd(callback) {
     $.ajax({
-      url: "https://192.168.10.242/share/savePassword",
+      url: "https://www.xanderye.cn/pan/share/savePassword",
       type: "POST",
       data: JSON.stringify(share),
       contentType: "application/json",
