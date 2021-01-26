@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         云盘填充密码
+// @name         网盘助手
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  云盘填充密码
+// @version      0.2
+// @description  支持云盘填充密码，百度云分享自定义提取码
 // @author       XanderYe
 // @require      https://lib.baomitu.com/jquery/3.5.0/jquery.min.js
 // @supportURL   https://www.xanderye.cn/
@@ -25,7 +25,10 @@ jQ(function ($) {
   var inputDom;
   var clickBtnDom;
   var queryPwd = false;
+  // 自动点击提取文件
   var autoClick = false;
+  // 增强功能 防止冲突默认关闭
+  var optimize = false;
 
   checkSourceType();
 
@@ -43,6 +46,9 @@ jQ(function ($) {
       share.shareId = getBaiduShareId();
       inputDom = $("#accessCode");
       clickBtnDom = $("#submitBtn");
+      if (optimize) {
+        baiduOptimize();
+      }
     } else if (href.indexOf("lanzous") > -1) {
       share.sourceType = 1;
       share.shareId = getLanzouShareId();
@@ -152,5 +158,42 @@ jQ(function ($) {
         }
       })
     }
+  }
+
+  function baiduOptimize() {
+    $(document).on("click", "a[title=分享]", function () {
+      setTimeout(function () {
+        if ($(".input-share-pwd").length == 0) {
+          var html = '<tr><td class="first-child"><label>提取码</label></td><td><input type="text" class="input-share-pwd" id="input-share-pwd" value="" placeholder="为空则随机四位" style="padding: 6px; width: 80px;border: 1px solid #e9e9e9;"></td></tr>';
+          $("#share .dialog-body table").append(html);
+          $(document).on("change", "#input-share-pwd", function () {
+            var value = this.value;
+            if (value && !value.match(/^[0-9a-z]{4}$/i)) {
+              showTip("failure", "提取码只能是四位数字或字母");
+            } else {
+              require(["function-widget-1:share/util/shareFriend/createLinkShare.js"]).prototype.makePrivatePassword=function(){return value};
+            }
+          })
+        } else {
+          $("#input-share-pwd").val("");
+        }
+      }, 100)
+    })
+  }
+
+  function showTip(mode, msg, hasClose, autoClose) {
+    var option = {
+      mode: mode,
+      msg: msg
+    };
+    // 关闭按钮
+    if (typeof hasClose != "undefined") {
+      option.hasClose = hasClose;
+    }
+    // 自动关闭
+    if (typeof autoClose != "undefined") {
+      option.autoClose = autoClose;
+    }
+    require("system-core:system/uiService/tip/tip.js").show(option);
   }
 })
