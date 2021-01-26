@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Created on 2021/1/25.
  *
- * @author 叶振东
+ * @author XanderYe
  */
 @Getter
 public enum SourceTypeEnum {

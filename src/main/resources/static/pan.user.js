@@ -10,6 +10,7 @@
 // @match        *://pan.baidu.com/*
 // @match        *://yun.baidu.com/*
 // @match        *://*.lanzous.com/*
+// @match        *://cloud.189.cn/t/*
 // ==/UserScript==
 
 var jQ = $.noConflict(true);
@@ -23,7 +24,6 @@ jQ(function ($) {
   };
   var inputDom;
   var clickBtnDom;
-  var checkDom;
   var queryPwd = false;
   var autoClick = false;
 
@@ -48,9 +48,11 @@ jQ(function ($) {
       share.shareId = getLanzouShareId();
       inputDom = $("#pwd");
       clickBtnDom = $("#sub");
-      checkDom = $("#pwdload");
     } else if (href.indexOf("189.cn") > -1) {
       share.sourceType = 2;
+      share.shareId = getTianyiShareId();
+      inputDom = $("#code_txt");
+      clickBtnDom = $(".visit").eq(0);
     }
     if (inputDom.length == 1) {
       queryPwd = true;
@@ -75,6 +77,10 @@ jQ(function ($) {
 
   function getLanzouShareId() {
     return location.pathname.substring(1);
+  }
+
+  function getTianyiShareId() {
+    return location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
   }
 
   function getPwd(callback) {

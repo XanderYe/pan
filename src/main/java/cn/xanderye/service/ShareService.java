@@ -32,7 +32,7 @@ public interface ShareService {
      * 更新状态
      * @param
      * @return void
-     * @author yezhendong
+     * @author XanderYe
      * @date 2021/1/26
      */
     void changeErrorById(Long id, Boolean error);

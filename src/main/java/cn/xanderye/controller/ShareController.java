@@ -9,6 +9,7 @@ import cn.xanderye.service.impl.BaiduCheckServiceImpl;
 import cn.xanderye.service.CheckService;
 import cn.xanderye.service.impl.LanzouCheckServiceImpl;
 import cn.xanderye.service.ShareService;
+import cn.xanderye.service.impl.TianyiCheckServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,10 @@ public class ShareController {
             break;
             case 1: {
                 checkService = new LanzouCheckServiceImpl();
+            }
+            break;
+            case 2: {
+                checkService = new TianyiCheckServiceImpl();
             }
             break;
             default: {

@@ -68,7 +68,7 @@ public class WebConfig implements WebMvcConfigurer {
      * 格式化json
      * @param converters
      * @return void
-     * @author yezhendong
+     * @author XanderYe
      * @date 2020-08-15
      */
     @Override
