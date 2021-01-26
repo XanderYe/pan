@@ -20,13 +20,19 @@ public class LanzouCheckServiceImpl implements CheckService {
     public boolean checkPwd(String url, String shareId, String pwd) throws IOException {
         String html = HttpUtil.doGet(url, null, new HashMap<>(), null);
         Map<String, Object> params = new HashMap<>();
+        String secret = StringUtils.substringBetween(html, "var pgs;", "pgs").trim();
+        String[] secrets = secret.split(";");
+        String ts = secrets[0].split("=")[1];
+        String t = StringUtils.substringBetween(ts, " '", "'");
+        String ks = secrets[1].split("=")[1];
+        String k = StringUtils.substringBetween(ks, " '", "'");
         params.put("lx", StringUtils.substringBetween(html, "'lx':", ","));
         params.put("fid", StringUtils.substringBetween(html, "'fid':", ","));
         params.put("pg", StringUtils.substringBetween(html, "pgs =", ";"));
         params.put("rep", StringUtils.substringBetween(html, "'rep':'", "',"));
         params.put("uid", StringUtils.substringBetween(html, "'uid':'", "',"));
-        params.put("t", StringUtils.substringBetween(html, "var ibjrwn = '", "';"));
-        params.put("k", StringUtils.substringBetween(html, "var ihi3yg = '", "';"));
+        params.put("t", t);
+        params.put("k", k);
         params.put("up", StringUtils.substringBetween(html, "'up':", ","));
         params.put("ls", StringUtils.substringBetween(html, "'ls':", ","));
         params.put("pwd", pwd);

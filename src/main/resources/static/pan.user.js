@@ -56,7 +56,6 @@ jQ(function ($) {
       queryPwd = true;
       inputDom.bind("input", function () {
         share.password = inputDom.val();
-        console.log(share.password);
       })
     }
   }
