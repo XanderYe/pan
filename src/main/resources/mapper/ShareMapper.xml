@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xanderye.mapper.ShareMapper">
+    <resultMap id="BaseResultMap" type="cn.xanderye.entity.Share">
+        <id column="id" property="id"/>
+        <result column="share_id" property="shareId"/>
+        <result column="source_type" property="sourceType"/>
+        <result column="password" property="password"/>
+        <result column="error" property="error"/>
+        <result column="url" property="url"/>
+    </resultMap>
+
+    <select id="getShareByShareIdAndType" resultMap="BaseResultMap">
+        select *
+        from share
+        where share_id = #{shareId}
+          and error = 0
+        <if test="sourceType != null">
+            and source_type = #{sourceType}
+        </if>
+        order by id desc limit 1
+    </select>
+
+    <select id="getAllShareByShareId" resultMap="BaseResultMap">
+        select *
+        from share
+        where share_id = #{shareId}
+        order by id desc limit 1
+    </select>
+
+    <insert id="insertShare" useGeneratedKeys="true" keyProperty="id">
+        insert into share
+        (share_id, source_type, password, error, url)
+        values
+        (#{shareId}, #{sourceType}, #{password}, #{error}, #{url})
+    </insert>
+
+    <update id="updateShareById">
+        update share
+        set
+            id = #{share.id}
+            <if test="share.shareId != null and share.shareId != ''">
+                , share_id = #{share.shareId}
+            </if>
+            <if test="share.sourceType != null">
+                , source_type = #{share.sourceType}
+            </if>
+            <if test="share.password != null and share.password != ''">
+                , password = #{share.password}
+            </if>
+            <if test="share.url != null and share.url != ''">
+                , url = #{share.url}
+            </if>
+            <if test="share.error != null">
+                , error = #{share.error}
+            </if>
+        where id = #{share.id}
+    </update>
+
+    <update id="updateErrorById">
+        update share
+        set error = #{share.error}
+        where id = #{share.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from share where id = #{id}
+    </delete>
+</mapper>
